@@ -33,7 +33,9 @@ const server = Bun.serve({
 
     // Toast endpoint
     if (path === "/toast" && method === "POST") {
-      const { type, message } = await req.json();
+      const formData = await req.formData();
+      const type = formData.get('type');
+      const message = formData.get('message');
       const id = Date.now();
       const icon = getToastIcon(type);
       
