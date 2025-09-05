@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Elements Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <h1 class="title-display">UI Elements Demo</h1>
+            <p class="subtitle">A showcase of standard UI components with HTMX interactions</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Typography Section -->
+            <section class="section">
+                <h2>Typography & Fonts</h2>
+                <div class="font-showcase">
+                    <div class="font-example">
+                        <h3 class="font-inter">Inter Font Family</h3>
+                        <p class="font-inter">The quick brown fox jumps over the lazy dog. (Regular, Medium, Semibold)</p>
+                        <code class="font-mono">console.log('Monospace for code');</code>
+                    </div>
+                    <div class="font-example">
+                        <h3 class="font-display">Playfair Display</h3>
+                        <p class="font-display">Elegant serif font for headings and emphasis</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Buttons Section -->
+            <section class="section">
+                <h2>Buttons & Actions</h2>
+                <div class="button-grid">
+                    <button class="btn btn-primary">Primary</button>
+                    <button class="btn btn-secondary">Secondary</button>
+                    <button class="btn btn-success">Success</button>
+                    <button class="btn btn-warning">Warning</button>
+                    <button class="btn btn-danger">Danger</button>
+                    <button class="btn btn-ghost">Ghost</button>
+                    <button class="btn btn-outline">Outline</button>
+                    <button class="btn btn-primary" disabled>Disabled</button>
+                </div>
+            </section>
+
+            <!-- Toasters Section -->
+            <section class="section">
+                <h2>Toast Notifications</h2>
+                <div class="button-group">
+                    <button 
+                        class="btn btn-success" 
+                        hx-post="/toast"
+                        hx-vals='{"type": "success", "message": "Success! Operation completed."}'
+                        hx-target="#toast-container"
+                        hx-swap="beforeend"
+                    >
+                        Success Toast
+                    </button>
+                    <button 
+                        class="btn btn-danger" 
+                        hx-post="/toast"
+                        hx-vals='{"type": "error", "message": "Error! Something went wrong."}'
+                        hx-target="#toast-container"
+                        hx-swap="beforeend"
+                    >
+                        Error Toast
+                    </button>
+                    <button 
+                        class="btn btn-warning" 
+                        hx-post="/toast"
+                        hx-vals='{"type": "warning", "message": "Warning! Please check your input."}'
+                        hx-target="#toast-container"
+                        hx-swap="beforeend"
+                    >
+                        Warning Toast
+                    </button>
+                    <button 
+                        class="btn btn-secondary" 
+                        hx-post="/toast"
+                        hx-vals='{"type": "info", "message": "Info: New update available."}'
+                        hx-target="#toast-container"
+                        hx-swap="beforeend"
+                    >
+                        Info Toast
+                    </button>
+                </div>
+            </section>
+
+            <!-- Modals Section -->
+            <section class="section">
+                <h2>Modals & Popups</h2>
+                <div class="button-group">
+                    <button 
+                        class="btn btn-primary" 
+                        hx-get="/modal/confirm"
+                        hx-target="#modal-container"
+                        hx-swap="innerHTML"
+                    >
+                        Confirmation Modal
+                    </button>
+                    <button 
+                        class="btn btn-secondary" 
+                        hx-get="/modal/info"
+                        hx-target="#modal-container"
+                        hx-swap="innerHTML"
+                    >
+                        Info Modal
+                    </button>
+                </div>
+            </section>
+
+            <!-- Form Controls Section -->
+            <section class="section">
+                <h2>Form Controls</h2>
+                <div class="form-controls">
+                    <div class="control-group">
+                        <label>Text Input</label>
+                        <input 
+                            type="text" 
+                            class="input" 
+                            placeholder="Enter some text..."
+                            hx-post="/form/input"
+                            hx-trigger="input changed delay:500ms"
+                            hx-target="#input-feedback"
+                        />
+                        <div id="input-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Select Dropdown</label>
+                        <select 
+                            class="select"
+                            hx-post="/form/select"
+                            hx-trigger="change"
+                            hx-target="#select-feedback"
+                        >
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                        </select>
+                        <div id="select-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Range Slider (<span id="slider-value">50</span>)</label>
+                        <input 
+                            type="range" 
+                            class="slider" 
+                            min="0" 
+                            max="100" 
+                            value="50"
+                            oninput="updateSliderValue(this.value)"
+                            hx-post="/form/slider"
+                            hx-trigger="input"
+                            hx-target="#slider-feedback"
+                        />
+                        <div id="slider-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Email Input</label>
+                        <input 
+                            type="email" 
+                            class="input" 
+                            placeholder="user@example.com"
+                            hx-post="/form/email"
+                            hx-trigger="input changed delay:500ms"
+                            hx-target="#email-feedback"
+                        />
+                        <div id="email-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Password Input</label>
+                        <input 
+                            type="password" 
+                            class="input" 
+                            placeholder="Enter password..."
+                            hx-post="/form/password"
+                            hx-trigger="input changed delay:500ms"
+                            hx-target="#password-feedback"
+                        />
+                        <div id="password-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Number Input</label>
+                        <input 
+                            type="number" 
+                            class="input" 
+                            min="0" 
+                            max="100"
+                            placeholder="0-100"
+                            hx-post="/form/number"
+                            hx-trigger="input changed delay:500ms"
+                            hx-target="#number-feedback"
+                        />
+                        <div id="number-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Date Input</label>
+                        <input 
+                            type="date" 
+                            class="input" 
+                            hx-post="/form/date"
+                            hx-trigger="change"
+                            hx-target="#date-feedback"
+                        />
+                        <div id="date-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Color Picker</label>
+                        <input 
+                            type="color" 
+                            class="color-input" 
+                            value="#3b82f6"
+                            hx-post="/form/color"
+                            hx-trigger="change"
+                            hx-target="#color-feedback"
+                        />
+                        <div id="color-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>File Upload</label>
+                        <input 
+                            type="file" 
+                            class="file-input" 
+                            accept=".jpg,.png,.gif,.pdf"
+                            hx-post="/form/file"
+                            hx-trigger="change"
+                            hx-target="#file-feedback"
+                            hx-encoding="multipart/form-data"
+                        />
+                        <div id="file-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Textarea</label>
+                        <textarea 
+                            class="textarea" 
+                            rows="4"
+                            placeholder="Enter multiple lines of text..."
+                            hx-post="/form/textarea"
+                            hx-trigger="input changed delay:500ms"
+                            hx-target="#textarea-feedback"
+                        ></textarea>
+                        <div id="textarea-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Multi-Select</label>
+                        <select 
+                            class="select" 
+                            multiple
+                            size="4"
+                            hx-post="/form/multiselect"
+                            hx-trigger="change"
+                            hx-target="#multiselect-feedback"
+                        >
+                            <option value="javascript">JavaScript</option>
+                            <option value="python">Python</option>
+                            <option value="rust">Rust</option>
+                            <option value="go">Go</option>
+                            <option value="typescript">TypeScript</option>
+                            <option value="css">CSS</option>
+                        </select>
+                        <div id="multiselect-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Radio Buttons</label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input 
+                                    type="radio" 
+                                    name="theme" 
+                                    value="light"
+                                    hx-post="/form/radio"
+                                    hx-trigger="change"
+                                    hx-target="#radio-feedback"
+                                    checked
+                                />
+                                <span class="radio-label">Light Theme</span>
+                            </label>
+                            <label class="radio-item">
+                                <input 
+                                    type="radio" 
+                                    name="theme" 
+                                    value="dark"
+                                    hx-post="/form/radio"
+                                    hx-trigger="change"
+                                    hx-target="#radio-feedback"
+                                />
+                                <span class="radio-label">Dark Theme</span>
+                            </label>
+                            <label class="radio-item">
+                                <input 
+                                    type="radio" 
+                                    name="theme" 
+                                    value="auto"
+                                    hx-post="/form/radio"
+                                    hx-trigger="change"
+                                    hx-target="#radio-feedback"
+                                />
+                                <span class="radio-label">Auto Theme</span>
+                            </label>
+                        </div>
+                        <div id="radio-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Checkboxes</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input 
+                                    type="checkbox" 
+                                    name="features" 
+                                    value="notifications"
+                                    hx-post="/form/checkbox"
+                                    hx-trigger="change"
+                                    hx-target="#checkbox-feedback"
+                                    checked
+                                />
+                                <span class="checkbox-label">Enable Notifications</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input 
+                                    type="checkbox" 
+                                    name="features" 
+                                    value="analytics"
+                                    hx-post="/form/checkbox"
+                                    hx-trigger="change"
+                                    hx-target="#checkbox-feedback"
+                                />
+                                <span class="checkbox-label">Analytics Tracking</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input 
+                                    type="checkbox" 
+                                    name="features" 
+                                    value="newsletter"
+                                    hx-post="/form/checkbox"
+                                    hx-trigger="change"
+                                    hx-target="#checkbox-feedback"
+                                />
+                                <span class="checkbox-label">Newsletter Subscription</span>
+                            </label>
+                        </div>
+                        <div id="checkbox-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Search Input</label>
+                        <div class="search-container">
+                            <input 
+                                type="search" 
+                                class="input search-input" 
+                                placeholder="Search..."
+                                hx-post="/form/search"
+                                hx-trigger="input changed delay:300ms"
+                                hx-target="#search-feedback"
+                            />
+                            <span class="search-icon">🔍</span>
+                        </div>
+                        <div id="search-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Rating (Click stars)</label>
+                        <div class="rating" onclick="handleRating(event)">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <div id="rating-feedback" class="feedback"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Toggle Switches</label>
+                        <div class="toggles">
+                            <div class="toggle-item">
+                                <span>Dark Mode</span>
+                                <button 
+                                    class="toggle" 
+                                    onclick="toggleSwitch(this)"
+                                    hx-post="/form/toggle"
+                                    hx-vals='{"name": "darkMode"}'
+                                    hx-target="#toggle-feedback"
+                                >
+                                    <div class="toggle-slider"></div>
+                                </button>
+                            </div>
+                            <div class="toggle-item">
+                                <span>Notifications</span>
+                                <button 
+                                    class="toggle active" 
+                                    onclick="toggleSwitch(this)"
+                                    hx-post="/form/toggle"
+                                    hx-vals='{"name": "notifications"}'
+                                    hx-target="#toggle-feedback"
+                                >
+                                    <div class="toggle-slider"></div>
+                                </button>
+                            </div>
+                            <div class="toggle-item">
+                                <span>Auto Save</span>
+                                <button 
+                                    class="toggle" 
+                                    onclick="toggleSwitch(this)"
+                                    hx-post="/form/toggle"
+                                    hx-vals='{"name": "autoSave"}'
+                                    hx-target="#toggle-feedback"
+                                >
+                                    <div class="toggle-slider"></div>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="toggle-feedback" class="feedback"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cards Section -->
+            <section class="section">
+                <h2>Cards & Containers</h2>
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>Basic Card</h3>
+                        <p>A simple card with some content and actions.</p>
+                        <button 
+                            class="btn btn-primary"
+                            hx-post="/card/action"
+                            hx-vals='{"card": "basic"}'
+                            hx-target="#card-feedback"
+                        >
+                            Action
+                        </button>
+                    </div>
+                    <div class="card card-elevated">
+                        <h3>Elevated Card</h3>
+                        <p>This card has more prominent shadows and styling.</p>
+                        <div class="card-actions">
+                            <button class="btn btn-ghost">Cancel</button>
+                            <button 
+                                class="btn btn-primary"
+                                hx-post="/card/action"
+                                hx-vals='{"card": "elevated"}'
+                                hx-target="#card-feedback"
+                            >
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card card-bordered">
+                        <h3>Bordered Card</h3>
+                        <p>A card with visible borders instead of shadows.</p>
+                        <span class="badge">New</span>
+                    </div>
+                </div>
+                <div id="card-feedback" class="feedback"></div>
+            </section>
+
+            <!-- Loading States -->
+            <section class="section">
+                <h2>Loading States</h2>
+                <div class="loading-examples">
+                    <div class="spinner"></div>
+                    <div class="skeleton-loader">
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line short"></div>
+                        <div class="skeleton-line"></div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 50%"></div>
+                    </div>
+                    <button 
+                        class="btn btn-primary"
+                        hx-get="/loading/demo"
+                        hx-target="#loading-demo"
+                        hx-indicator="#loading-spinner"
+                    >
+                        Test Loading
+                    </button>
+                    <div class="htmx-indicator" id="loading-spinner">Loading...</div>
+                    <div id="loading-demo"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Toast Container -->
+        <div id="toast-container" class="toast-container"></div>
+
+        <!-- Modal Container -->
+        <div id="modal-container"></div>
+    </div>
+
+    <script src="./app.js"></script>
+</body>
+</html>
