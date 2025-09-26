@@ -104,3 +104,39 @@ bun --hot ./index.ts
 ```
 
 For more information, read the Bun API docs in `node_modules/bun-types/docs/**.md`.
+
+## Railway Deployment
+
+This project is configured for Railway deployment with `railway.toml`:
+
+```toml
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "bun start"
+
+[environments.production]
+variables = {}
+```
+
+### Deployment Steps
+
+1. **Check Railway CLI**: Ensure Railway CLI is installed (`railway --version`)
+
+2. **Deploy**: Use the following command to deploy:
+   ```bash
+   railway up --service ui-demo-htmx --detach
+   ```
+
+3. **Get Domain**: After deployment, get the live URL:
+   ```bash
+   railway domain
+   ```
+
+4. **Check Status**: Monitor deployment status:
+   ```bash
+   railway status
+   ```
+
+The app will be deployed to: https://ui-demo-htmx-production.up.railway.app
